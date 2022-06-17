@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Location Management</string>
+    <string name="label_navigationMenu_favorites">Yêu thích</string>
+    <string name="label_navigationMenu_map">Bản đồ</string>
 </resources>

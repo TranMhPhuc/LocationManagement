@@ -1,4 +1,4 @@
-package com.learn.locationmanagement.ui.common;
+package com.learn.locationmanagement.ui.common.activity;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;

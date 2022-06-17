@@ -4,6 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Study/Job/Training/week3/LocationManagement/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
+        <entry key="..\:/Study/Job/Training/week3/LocationManagement/app/src/main/res/layout/fragment_favorites.xml" value="0.2230769230769231" />
+        <entry key="..\:/Study/Job/Training/week3/LocationManagement/app/src/main/res/layout/fragment_map.xml" value="0.22826086956521738" />
+        <entry key="..\:/Study/Job/Training/week3/LocationManagement/app/src/main/res/menu/navigation_menu.xml" value="0.271875" />
       </map>
     </option>
   </component>
