@@ -3,4 +3,6 @@
     <string name="label_navigationMenu_favorites">Yêu thích</string>
     <string name="label_navigationMenu_map">Bản đồ</string>
     <string name="label_favorites_title">Danh sách các địa điểm ưu thích</string>
+    <string name="label_locationItem_code">Mã: %1$s</string>
+    <string name="label_locationItem_name">Địa điểm: %1$s</string>
 </resources>
