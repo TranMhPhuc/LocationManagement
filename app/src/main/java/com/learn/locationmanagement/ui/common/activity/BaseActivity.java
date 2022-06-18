@@ -1,13 +1,14 @@
 package com.learn.locationmanagement.ui.common.activity;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.viewbinding.ViewBinding;
+
+import com.learn.locationmanagement.R;
 
 public abstract class BaseActivity<V extends ViewBinding> extends AppCompatActivity {
     protected V binding;
@@ -17,6 +18,12 @@ public abstract class BaseActivity<V extends ViewBinding> extends AppCompatActiv
         super.onCreate(savedInstanceState);
         binding = bindView();
         setContentView(binding.getRoot());
+        setupStatusBar();
+    }
+
+    private void setupStatusBar() {
+        this.getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.primaryDarkColor));
+        this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
 
     public abstract V bindView();

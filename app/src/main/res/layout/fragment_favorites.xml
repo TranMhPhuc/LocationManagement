@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.fragment.FavoritesFragment">
+    tools:context=".ui.fragment.FavoritesFragment"
+    style="@style/fragment_main">
 
     <TextView
-        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/secondaryLightColor"
+        android:elevation="@dimen/elevation_4dp"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/margin_8dp"
+        android:text="@string/label_favorites_title"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.Material3.ActionBar.Title"
+        android:textStyle="bold" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/locationSearchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_margin="@dimen/margin_8dp"
+        android:background="@drawable/material_full_rounded_corner_4dp"
+        android:elevation="@dimen/elevation_4dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/locationRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/item_location"
+        android:layout_marginStart="@dimen/margin_8dp"
+        android:layout_marginTop="@dimen/margin_8dp"
+        android:layout_marginEnd="@dimen/margin_8dp" />
 </LinearLayout>
