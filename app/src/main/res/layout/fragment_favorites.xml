@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.fragment.FavoritesFragment"
-    style="@style/fragment_main">
+    style="@style/fragment_main"
+    tools:context=".ui.fragment.FavoritesFragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
+        android:layout_marginBottom="@dimen/margin_8dp"
         android:background="@color/secondaryLightColor"
         android:elevation="@dimen/elevation_4dp"
         android:gravity="center"
-        android:layout_marginBottom="@dimen/margin_8dp"
         android:text="@string/label_favorites_title"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.Material3.ActionBar.Title"
@@ -28,8 +28,8 @@
         android:id="@+id/locationRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_location"
         android:layout_marginStart="@dimen/margin_8dp"
         android:layout_marginTop="@dimen/margin_8dp"
-        android:layout_marginEnd="@dimen/margin_8dp" />
+        android:layout_marginEnd="@dimen/margin_8dp"
+        tools:listitem="@layout/item_location" />
 </LinearLayout>
