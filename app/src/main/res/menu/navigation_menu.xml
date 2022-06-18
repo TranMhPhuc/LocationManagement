@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/favoritesFragment"
-        android:icon="@drawable/bnv_tab_item_foreground"
+        android:icon="@drawable/navigation_tab_item_favorites"
         android:title="@string/label_navigationMenu_favorites" />
 
     <item
         android:id="@+id/mapFragment"
-        android:icon="@drawable/ic_place_outline_24"
+        android:icon="@drawable/navigation_tab_item_map"
         android:title="@string/label_navigationMenu_map" />
 </menu>

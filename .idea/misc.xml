@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Study/Job/Training/week3/LocationManagement/app/src/main/res/drawable/navigation_tab_item_favorites.xml" value="0.2" />
+        <entry key="..\:/Study/Job/Training/week3/LocationManagement/app/src/main/res/drawable/navigation_tab_item_map.xml" value="0.2" />
         <entry key="..\:/Study/Job/Training/week3/LocationManagement/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
         <entry key="..\:/Study/Job/Training/week3/LocationManagement/app/src/main/res/layout/fragment_favorites.xml" value="0.2230769230769231" />
         <entry key="..\:/Study/Job/Training/week3/LocationManagement/app/src/main/res/layout/fragment_map.xml" value="0.22826086956521738" />

@@ -36,6 +36,8 @@
         android:layout_height="56dp"
         app:itemTextAppearanceActive="@style/TextAppearance.Material3.TitleSmall"
         app:itemTextAppearanceInactive="@style/TextAppearance.Material3.TitleSmall"
+        app:itemIconTint="@color/bnv_tab_item_foreground"
+        app:itemTextColor="@color/bnv_tab_item_foreground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/navigation_menu"
         android:background="@color/secondaryLightColor"

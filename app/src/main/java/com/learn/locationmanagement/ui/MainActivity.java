@@ -27,7 +27,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         if (navHostFragment != null) {
             NavController navController = navHostFragment.getNavController();
             NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
-            binding.bottomNavigationView.setItemIconTintList(null);
         }
     }
 }
