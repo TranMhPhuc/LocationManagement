@@ -39,16 +39,6 @@ public class Location {
     }
 
     @Ignore
-    public static Location fromFavoriteLocation(@NonNull FavoriteLocation favoriteLocation) {
-        return new Location(
-                favoriteLocation.getId(),
-                favoriteLocation.getCode(),
-                favoriteLocation.getName(),
-                favoriteLocation.getImage()
-        );
-    }
-
-    @Ignore
     public void setDetail(@NonNull LocationDetail detail) {
         this.lat = detail.getLat();
         this.lng = detail.getLng();
