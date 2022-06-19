@@ -5,6 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     app:cardCornerRadius="@dimen/corner_4dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/secondaryDarkColor"
     app:cardElevation="@dimen/elevation_4dp"
     android:layout_marginBottom="@dimen/margin_8dp"
     android:layout_height="wrap_content">

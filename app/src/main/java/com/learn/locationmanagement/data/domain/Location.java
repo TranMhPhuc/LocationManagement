@@ -10,15 +10,18 @@ import com.learn.locationmanagement.model.location.favorites.FavoriteLocation;
 
 @Entity
 public class Location {
+    public static final double NO_LOCATION = 200;
+
     @PrimaryKey(autoGenerate = false)
+    @NonNull
     private String id;
     private String code;
     private String name;
     private String image;
 
-    private double lat;
-    private double lng;
-    private String description;
+    private double lat = NO_LOCATION;
+    private double lng = NO_LOCATION;
+    private String description = null;
 
     public Location(String id, String code, String name, String image, double lat, double lng, String description) {
         this.id = id;
@@ -45,11 +48,12 @@ public class Location {
         this.description = detail.getDescription();
     }
 
+    @NonNull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 

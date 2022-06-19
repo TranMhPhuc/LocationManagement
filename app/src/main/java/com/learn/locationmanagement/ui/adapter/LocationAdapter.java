@@ -27,7 +27,7 @@ public class LocationAdapter extends ListAdapter<FavoriteLocation, LocationAdapt
         }
     };
 
-    protected LocationAdapter() {
+    public LocationAdapter() {
         super(DIFF_CALLBACK);
     }
 
@@ -55,6 +55,7 @@ public class LocationAdapter extends ListAdapter<FavoriteLocation, LocationAdapt
 
         public LocationViewHolder(@NonNull ItemLocationBinding binding) {
             super(binding.getRoot());
+            this.binding = binding;
             itemContext = binding.getRoot().getContext();
             imageLoader = new ImageLoader(itemContext);
         }
@@ -63,7 +64,7 @@ public class LocationAdapter extends ListAdapter<FavoriteLocation, LocationAdapt
             // TODO show info on the item: id, name and image with glide
             binding.tvLocationCode.setText(itemContext.getString(R.string.label_locationItem_code, favoriteLocation.getCode()));
             binding.tvLocationName.setText(itemContext.getString(R.string.label_locationItem_name, favoriteLocation.getName()));
-            imageLoader.loadImage(favoriteLocation.getImage(), -1, -1, binding.ivLocationImage);
+            imageLoader.loadImage(favoriteLocation.getImage(), R.drawable.place, R.drawable.place, binding.ivLocationImage);
         }
     }
 }

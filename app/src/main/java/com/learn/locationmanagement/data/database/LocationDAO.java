@@ -20,4 +20,7 @@ public interface LocationDAO {
 
     @Query("SELECT * FROM Location")
     List<Location> getAllLocations();
+
+    @Query("SELECT * FROM Location WHERE Location.id = :id")
+    Location getLocationById(String id);
 }

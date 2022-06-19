@@ -1,6 +1,7 @@
 package com.learn.locationmanagement.ui;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -28,5 +29,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             NavController navController = navHostFragment.getNavController();
             NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
         }
+    }
+
+    public void showProgressBar() {
+        binding.progressCircular.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgressBar() {
+        binding.progressCircular.setVisibility(View.INVISIBLE);
     }
 }

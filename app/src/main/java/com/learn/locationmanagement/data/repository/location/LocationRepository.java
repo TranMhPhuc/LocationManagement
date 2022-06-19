@@ -10,12 +10,13 @@ public interface LocationRepository {
     interface DataLoadCallBack<T> {
         void onDataLoaded(T data);
         void onDataNotAvailable();
-        void onError();
+        default void onError() {};
+        default void onError(int errorCode, String errorMessage){};
     }
 
-    void getFavoriteLocations(DataLoadCallBack<FavoriteLocation> callBack);
+    void getFavoriteLocations(DataLoadCallBack<List<FavoriteLocation>> callBack);
     void saveFavoriteLocations(List<FavoriteLocation> locations);
 
-    void getLocationDetail(DataLoadCallBack<LocationDetail> callBack);
-    void saveLocationDetail(LocationDetail detail);
+    void getLocationDetail(String locationId, DataLoadCallBack<LocationDetail> callBack);
+    void saveLocationDetail(String locationId, LocationDetail detail);
 }

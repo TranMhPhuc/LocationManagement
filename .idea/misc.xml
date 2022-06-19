@@ -5,6 +5,8 @@
       <map>
         <entry key="..\:/Study/Job/Training/week3/LocationManagement/app/src/main/res/drawable-v24/shape_circle_with_stroke.xml" value="0.2" />
         <entry key="..\:/Study/Job/Training/week3/LocationManagement/app/src/main/res/drawable/ic_direction_filled_24.xml" value="0.2" />
+        <entry key="..\:/Study/Job/Training/week3/LocationManagement/app/src/main/res/drawable/ic_not_listed_location.xml" value="0.104" />
+        <entry key="..\:/Study/Job/Training/week3/LocationManagement/app/src/main/res/drawable/ic_wrong_location.xml" value="0.104" />
         <entry key="..\:/Study/Job/Training/week3/LocationManagement/app/src/main/res/drawable/material_full_rounded_corner_4dp.xml" value="0.104" />
         <entry key="..\:/Study/Job/Training/week3/LocationManagement/app/src/main/res/drawable/navigation_tab_item_favorites.xml" value="0.2" />
         <entry key="..\:/Study/Job/Training/week3/LocationManagement/app/src/main/res/drawable/navigation_tab_item_map.xml" value="0.2" />
