@@ -1,4 +1,4 @@
-package com.learn.locationmanagement.networking;
+package com.learn.locationmanagement.data.networking;
 
 import com.learn.locationmanagement.model.location.detail.LocationDetailResponse;
 import com.learn.locationmanagement.model.location.favorites.FavoriteLocationResponse;

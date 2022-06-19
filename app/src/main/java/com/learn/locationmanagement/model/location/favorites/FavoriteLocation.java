@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
 
-public class Location {
+public class FavoriteLocation {
 	@SerializedName("id")
 	private String id;
 
@@ -18,7 +18,7 @@ public class Location {
 	private String image;
 
 
-	public Location(String image, String code, String name, String id) {
+	public FavoriteLocation(String image, String code, String name, String id) {
 		this.image = image;
 		this.code = code;
 		this.name = name;
@@ -45,8 +45,8 @@ public class Location {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		Location location = (Location) o;
-		return Objects.equals(id, location.id) && Objects.equals(code, location.code) && Objects.equals(name, location.name) && Objects.equals(image, location.image);
+		FavoriteLocation favoriteLocation = (FavoriteLocation) o;
+		return Objects.equals(id, favoriteLocation.id) && Objects.equals(code, favoriteLocation.code) && Objects.equals(name, favoriteLocation.name) && Objects.equals(image, favoriteLocation.image);
 	}
 
 	@Override

@@ -5,7 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 
 import com.learn.locationmanagement.BuildConfig;
-import com.learn.locationmanagement.networking.UrlProvider;
+import com.learn.locationmanagement.data.networking.UrlProvider;
 
 import dagger.Module;
 import dagger.Provides;
@@ -40,8 +40,8 @@ public class AppModule {
         return builder.build();
     }
 
-    @Provides
     @AppScope
+    @Provides
     public Retrofit retrofit(@NonNull UrlProvider urlProvider, @NonNull OkHttpClient httpClient) {
         return new Retrofit.Builder()
                 .baseUrl(urlProvider.getBaseUrl())

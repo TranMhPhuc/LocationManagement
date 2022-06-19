@@ -10,9 +10,9 @@ public class FavoriteLocationResponse {
     private String errorMessage;
 
     @SerializedName("data")
-    private LocationData data;
+    private FavoriteLocationData data;
 
-    public FavoriteLocationResponse(int errorCode, String errorMessage, LocationData data) {
+    public FavoriteLocationResponse(int errorCode, String errorMessage, FavoriteLocationData data) {
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
         this.data = data;
@@ -26,7 +26,7 @@ public class FavoriteLocationResponse {
         return errorMessage;
     }
 
-    public LocationData getData() {
+    public FavoriteLocationData getData() {
         return data;
     }
 }

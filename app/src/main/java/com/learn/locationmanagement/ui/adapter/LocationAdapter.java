@@ -5,26 +5,24 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.learn.locationmanagement.R;
 import com.learn.locationmanagement.databinding.ItemLocationBinding;
-import com.learn.locationmanagement.model.location.favorites.Location;
+import com.learn.locationmanagement.model.location.favorites.FavoriteLocation;
 import com.learn.locationmanagement.ui.common.image.ImageLoader;
 
-public class LocationAdapter extends ListAdapter<Location, LocationAdapter.LocationViewHolder> {
-    public static final DiffUtil.ItemCallback<Location> DIFF_CALLBACK = new DiffUtil.ItemCallback<Location>() {
+public class LocationAdapter extends ListAdapter<FavoriteLocation, LocationAdapter.LocationViewHolder> {
+    public static final DiffUtil.ItemCallback<FavoriteLocation> DIFF_CALLBACK = new DiffUtil.ItemCallback<FavoriteLocation>() {
         @Override
-        public boolean areItemsTheSame(@NonNull Location oldItem, @NonNull Location newItem) {
+        public boolean areItemsTheSame(@NonNull FavoriteLocation oldItem, @NonNull FavoriteLocation newItem) {
             return oldItem.getId().equals(newItem.getId());
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull Location oldItem, @NonNull Location newItem) {
+        public boolean areContentsTheSame(@NonNull FavoriteLocation oldItem, @NonNull FavoriteLocation newItem) {
             return oldItem.equals(newItem);
         }
     };
@@ -61,11 +59,11 @@ public class LocationAdapter extends ListAdapter<Location, LocationAdapter.Locat
             imageLoader = new ImageLoader(itemContext);
         }
 
-        public void bind(@NonNull Location location) {
+        public void bind(@NonNull FavoriteLocation favoriteLocation) {
             // TODO show info on the item: id, name and image with glide
-            binding.tvLocationCode.setText(itemContext.getString(R.string.label_locationItem_code, location.getCode()));
-            binding.tvLocationName.setText(itemContext.getString(R.string.label_locationItem_name, location.getName()));
-            imageLoader.loadImage(location.getImage(), -1, -1, binding.ivLocationImage);
+            binding.tvLocationCode.setText(itemContext.getString(R.string.label_locationItem_code, favoriteLocation.getCode()));
+            binding.tvLocationName.setText(itemContext.getString(R.string.label_locationItem_name, favoriteLocation.getName()));
+            imageLoader.loadImage(favoriteLocation.getImage(), -1, -1, binding.ivLocationImage);
         }
     }
 }
