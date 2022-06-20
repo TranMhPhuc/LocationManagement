@@ -1,13 +1,11 @@
 package com.learn.locationmanagement.ui.fragment;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Lifecycle;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -33,12 +31,6 @@ public class FavoriteLocationsFragment extends BaseFragment<FragmentFavoritesBin
     private LocationAdapter locationAdapter;
 
     private NavController navController;
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
 
     @Override
     public FragmentFavoritesBinding bindView() {
@@ -75,9 +67,21 @@ public class FavoriteLocationsFragment extends BaseFragment<FragmentFavoritesBin
     }
 
     private void setEvent() {
-        LifecycleOwner viewLifecycleOwner = getViewLifecycleOwner();
         binding.swipeRefresh.setOnRefreshListener(() -> favoritesLocationViewModel.onRefresh());
+        binding.locationSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String query) {
+                locationAdapter.getFilter().filter(query);
+                return false;
+            }
+        });
+
+        LifecycleOwner viewLifecycleOwner = getViewLifecycleOwner();
         favoritesLocationViewModel.getShowProgressBarLiveData().observe(viewLifecycleOwner, visible -> {
             if (visible) {
                 mainActivity.showProgressBar();
@@ -103,6 +107,13 @@ public class FavoriteLocationsFragment extends BaseFragment<FragmentFavoritesBin
         binding.swipeRefresh.setRefreshing(false);
     }
 
+    private void onNavigateChange(FavoriteLocation favoriteLocation) {
+        if (favoriteLocation == null) return;
+        FavoriteLocationsFragmentDirections.ActionFavoritesFragmentToDetailFragment actionFavoritesFragmentToDetailFragment
+                = FavoriteLocationsFragmentDirections.actionFavoritesFragmentToDetailFragment(favoriteLocation);
+        navController.navigate(actionFavoritesFragmentToDetailFragment);
+    }
+
 
     @Override
     public void onDestroyView() {
@@ -113,10 +124,4 @@ public class FavoriteLocationsFragment extends BaseFragment<FragmentFavoritesBin
         super.onDestroyView();
     }
 
-    private void onNavigateChange(FavoriteLocation favoriteLocation) {
-        if (favoriteLocation == null) return;
-        FavoriteLocationsFragmentDirections.ActionFavoritesFragmentToDetailFragment actionFavoritesFragmentToDetailFragment
-                = FavoriteLocationsFragmentDirections.actionFavoritesFragmentToDetailFragment(favoriteLocation);
-        navController.navigate(actionFavoritesFragmentToDetailFragment);
-    }
 }
