@@ -8,8 +8,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.learn.locationmanagement.databinding.FragmentFavoritesBinding;
@@ -20,11 +21,18 @@ import com.learn.locationmanagement.ui.common.fragment.BaseFragment;
 import com.learn.locationmanagement.viewmodel.FavoritesLocationViewModel;
 import com.learn.locationmanagement.viewmodel.ViewModelFactory;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
-public class FavoritesFragment extends BaseFragment<FragmentFavoritesBinding> {
+public class FavoriteLocationsFragment extends BaseFragment<FragmentFavoritesBinding> {
+    @Inject
+    public ViewModelFactory viewModelFactory;
+    @Inject
+    public MainActivity mainActivity;
+    private FavoritesLocationViewModel favoritesLocationViewModel;
+    private LocationAdapter locationAdapter;
+
+    private NavController navController;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -36,12 +44,6 @@ public class FavoritesFragment extends BaseFragment<FragmentFavoritesBinding> {
         return FragmentFavoritesBinding.inflate(getLayoutInflater());
     }
 
-    @Inject public ViewModelFactory viewModelFactory;
-    private FavoritesLocationViewModel favoritesLocationViewModel;
-    private LocationAdapter locationAdapter;
-
-    public MainActivity mainActivity;
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -51,9 +53,19 @@ public class FavoritesFragment extends BaseFragment<FragmentFavoritesBinding> {
     }
 
     private void setControl() {
-        mainActivity = (MainActivity) requireActivity();
+        navController = Navigation.findNavController(binding.getRoot());
+        LocationAdapter.OnClickListener listener = new LocationAdapter.OnClickListener() {
+            @Override
+            public void onItemClick(FavoriteLocation favoriteLocation) {
+                favoritesLocationViewModel.onLocationItemClick(favoriteLocation);
+            }
 
-        locationAdapter = new LocationAdapter();
+            @Override
+            public void onDirectionButtonClick(FavoriteLocation favoriteLocation) {
+                favoritesLocationViewModel.onBtnDirectionButtonClick(favoriteLocation);
+            }
+        };
+        locationAdapter = new LocationAdapter(listener);
         binding.locationRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         binding.locationRecyclerView.setAdapter(locationAdapter);
 
@@ -63,7 +75,7 @@ public class FavoritesFragment extends BaseFragment<FragmentFavoritesBinding> {
 
     private void setEvent() {
         LifecycleOwner viewLifecycleOwner = getViewLifecycleOwner();
-        favoritesLocationViewModel.getShowProgressBar().observe(viewLifecycleOwner, visible -> {
+        favoritesLocationViewModel.getShowProgressBarLiveData().observe(viewLifecycleOwner, visible -> {
             if (visible) {
                 mainActivity.showProgressBar();
             } else {
@@ -75,6 +87,14 @@ public class FavoritesFragment extends BaseFragment<FragmentFavoritesBinding> {
                     locationAdapter.submitList(locations);
                 }
         );
+        favoritesLocationViewModel.getNavigateToMapScreenLiveData().observe(viewLifecycleOwner, position -> {
+            // TODO show map
+        });
+        favoritesLocationViewModel.getNavigateToDetailScreenLiveData().observe(viewLifecycleOwner, favoriteLocation -> {
+            FavoriteLocationsFragmentDirections.ActionFavoritesFragmentToDetailFragment actionFavoritesFragmentToDetailFragment
+                    = FavoriteLocationsFragmentDirections.actionFavoritesFragmentToDetailFragment(favoriteLocation);
+            navController.navigate(actionFavoritesFragmentToDetailFragment);
+        });
         favoritesLocationViewModel.getFavoriteLocations();
     }
 }

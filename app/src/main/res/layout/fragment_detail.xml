@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/fragment_main"
+    tools:context=".ui.fragment.LocationDetailFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/secondaryLightColor"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btnGoBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/margin_8dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/label_detail_toolbar"
+            android:textAppearance="@style/TextAppearance.Material3.ActionBar.Title" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivLocationDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_8dp"
+        android:background="@drawable/material_full_rounded_corner_4dp"
+        android:src="@drawable/place" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/margin_8dp"
+        android:layout_weight="1"
+        android:background="@drawable/material_full_rounded_corner_4dp">
+
+        <TextView
+            android:id="@+id/tvLocationCodeLabel"
+            style="@style/label_detail_info"
+            android:text="@string/label_detail_locationCode"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvLocationCodeInfo"
+            style="@style/text_detail_info"
+            android:text="@string/app_name"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvLocationCodeLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvLocationCodeLabel" />
+
+        <TextView
+            android:id="@+id/tvLocationNameLabel"
+            style="@style/label_detail_info"
+            android:text="@string/label_detail_locationName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvLocationCodeLabel" />
+
+        <TextView
+            android:id="@+id/tvLocationNameInfo"
+            style="@style/text_detail_info"
+            android:layout_marginEnd="@dimen/margin_8dp"
+            android:text="@string/app_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvLocationNameLabel" />
+
+        <TextView
+            android:id="@+id/tvLocationLatLabel"
+            style="@style/label_detail_info"
+            android:text="@string/label_detail_locationLat"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvLocationNameInfo" />
+
+        <TextView
+            android:id="@+id/tvLocationLatInfo"
+            style="@style/text_detail_info"
+            android:text="@string/app_name"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvLocationLatLabel"
+            app:layout_constraintStart_toEndOf="@+id/tvLocationLatLabel" />
+
+
+        <TextView
+            android:id="@+id/tvLocationLngLabel"
+            style="@style/label_detail_info"
+            android:text="@string/text_detail_locationLong"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvLocationLngInfo"
+            app:layout_constraintEnd_toStartOf="@+id/tvLocationLngInfo" />
+
+        <TextView
+            android:id="@+id/tvLocationLngInfo"
+            style="@style/text_detail_info"
+            android:layout_marginEnd="@dimen/margin_8dp"
+            android:text="TextView"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvLocationLatLabel"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tvLocationDescriptionLabel"
+            style="@style/label_detail_info"
+            android:text="@string/text_detail_locationDescription"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvLocationLatLabel" />
+
+        <TextView
+            android:id="@+id/tvLocationDescriptionInfo"
+            style="@style/text_detail_info"
+            android:text="@string/app_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvLocationDescriptionLabel" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/materialButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_detail_buttonFind"
+            android:textColor="@color/secondaryDarkColor"
+            app:backgroundTint="@color/white"
+            app:layout_constraintEnd_toStartOf="@+id/button"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/secondaryDarkColor" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_detail_buttonGo"
+            android:textColor="@color/black"
+            app:backgroundTint="@color/secondaryDarkColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/materialButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

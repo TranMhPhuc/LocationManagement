@@ -27,7 +27,7 @@
             app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
 
         <TextView
-            android:id="@+id/tvLocationCode"
+            android:id="@+id/tvLocationCodeLabel"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/margin_8dp"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             app:layout_constraintEnd_toStartOf="@+id/btnDirection"
             app:layout_constraintStart_toEndOf="@+id/ivLocationImage"
-            app:layout_constraintTop_toBottomOf="@+id/tvLocationCode" />
+            app:layout_constraintTop_toBottomOf="@+id/tvLocationCodeLabel" />
 
         <ImageButton
             android:id="@+id/btnDirection"

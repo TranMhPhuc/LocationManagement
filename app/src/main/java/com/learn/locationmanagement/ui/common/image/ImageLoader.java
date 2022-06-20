@@ -6,10 +6,13 @@ import android.widget.ImageView;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
+
+import javax.inject.Inject;
 
 public class ImageLoader {
     private Context context;
@@ -22,7 +25,25 @@ public class ImageLoader {
         this.context = context;
     }
 
-    public void loadImage(@NonNull String imageUrl, @DrawableRes int placeHolderRes, @DrawableRes int errorHolderRes, @NonNull ImageView target) {
+    private Fragment fragment;
+
+    @Inject
+    public ImageLoader (Fragment fragment) {
+        this.fragment = fragment;
+    }
+
+    public void loadImageWithFragment(@NonNull String imageUrl, @DrawableRes int placeHolderRes, @DrawableRes int errorHolderRes, @NonNull ImageView target) {
+        RequestBuilder<Drawable> loader = Glide.with(fragment)
+                .load(imageUrl);
+        if (placeHolderRes != -1) {
+            loader = loader.placeholder(placeHolderRes);
+        }
+        if (errorHolderRes != -1) {
+            loader = loader.error(errorHolderRes);
+        }
+        loader.into(target);
+    }
+    public void loadImageWithContext(@NonNull String imageUrl, @DrawableRes int placeHolderRes, @DrawableRes int errorHolderRes, @NonNull ImageView target) {
         RequestBuilder<Drawable> loader = Glide.with(context)
                 .load(imageUrl);
         if (placeHolderRes != -1) {

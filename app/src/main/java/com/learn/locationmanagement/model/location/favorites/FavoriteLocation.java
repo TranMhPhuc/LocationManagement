@@ -1,10 +1,15 @@
 package com.learn.locationmanagement.model.location.favorites;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
 
-public class FavoriteLocation {
+public class FavoriteLocation implements Parcelable {
 	@SerializedName("id")
 	private String id;
 
@@ -24,6 +29,25 @@ public class FavoriteLocation {
 		this.name = name;
 		this.id = id;
 	}
+
+	protected FavoriteLocation(@NonNull Parcel in) {
+		id = in.readString();
+		code = in.readString();
+		name = in.readString();
+		image = in.readString();
+	}
+
+	public static final Creator<FavoriteLocation> CREATOR = new Creator<FavoriteLocation>() {
+		@Override
+		public FavoriteLocation createFromParcel(Parcel in) {
+			return new FavoriteLocation(in);
+		}
+
+		@Override
+		public FavoriteLocation[] newArray(int size) {
+			return new FavoriteLocation[size];
+		}
+	};
 
 	public String getImage() {
 		return image;
@@ -52,5 +76,18 @@ public class FavoriteLocation {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, code, name, image);
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel parcel, int i) {
+		parcel.writeString(id);
+		parcel.writeString(code);
+		parcel.writeString(name);
+		parcel.writeString(image);
 	}
 }

@@ -5,4 +5,12 @@
     <string name="label_favorites_title">Danh sách các địa điểm ưu thích</string>
     <string name="label_locationItem_code">Mã: %1$s</string>
     <string name="label_locationItem_name">Địa điểm: %1$s</string>
+    <string name="label_detail_toolbar">Thông tin chi tiết</string>
+    <string name="label_detail_locationCode">Mã địa danh</string>
+    <string name="label_detail_locationName">Tên địa danh</string>
+    <string name="label_detail_locationLat">Lat</string>
+    <string name="text_detail_locationLong">Long</string>
+    <string name="text_detail_locationDescription">Mô tả</string>
+    <string name="label_detail_buttonFind">Tìm đường</string>
+    <string name="label_detail_buttonGo">Xuất phát</string>
 </resources>

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/fragment_main"
-    tools:context=".ui.fragment.FavoritesFragment">
+    tools:context=".ui.fragment.FavoriteLocationsFragment">
 
     <TextView
         android:layout_width="match_parent"

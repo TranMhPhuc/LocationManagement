@@ -27,8 +27,11 @@ public class LocationAdapter extends ListAdapter<FavoriteLocation, LocationAdapt
         }
     };
 
-    public LocationAdapter() {
+    private OnClickListener listener;
+
+    public LocationAdapter(OnClickListener onClickListener) {
         super(DIFF_CALLBACK);
+        this.listener = onClickListener;
     }
 
     @NonNull
@@ -55,16 +58,36 @@ public class LocationAdapter extends ListAdapter<FavoriteLocation, LocationAdapt
 
         public LocationViewHolder(@NonNull ItemLocationBinding binding) {
             super(binding.getRoot());
+            setControl(binding);
+            setEvent();
+        }
+
+        private void setControl(@NonNull ItemLocationBinding binding) {
             this.binding = binding;
             itemContext = binding.getRoot().getContext();
             imageLoader = new ImageLoader(itemContext);
         }
 
+        private void setEvent() {
+            binding.getRoot().setOnClickListener(view -> {
+                listener.onItemClick(getItem(getAdapterPosition()));
+            });
+
+            binding.btnDirection.setOnClickListener(view -> {
+               listener.onDirectionButtonClick(getItem(getAdapterPosition()));
+            });
+        }
+
         public void bind(@NonNull FavoriteLocation favoriteLocation) {
             // TODO show info on the item: id, name and image with glide
-            binding.tvLocationCode.setText(itemContext.getString(R.string.label_locationItem_code, favoriteLocation.getCode()));
+            binding.tvLocationCodeLabel.setText(itemContext.getString(R.string.label_locationItem_code, favoriteLocation.getCode()));
             binding.tvLocationName.setText(itemContext.getString(R.string.label_locationItem_name, favoriteLocation.getName()));
-            imageLoader.loadImage(favoriteLocation.getImage(), R.drawable.place, R.drawable.place, binding.ivLocationImage);
+            imageLoader.loadImageWithContext(favoriteLocation.getImage(), R.drawable.place, R.drawable.place, binding.ivLocationImage);
         }
+    }
+
+    public interface OnClickListener {
+        void onItemClick(FavoriteLocation favoriteLocation);
+        void onDirectionButtonClick(FavoriteLocation favoriteLocation);
     }
 }

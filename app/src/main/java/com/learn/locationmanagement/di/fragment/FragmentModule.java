@@ -4,6 +4,8 @@ import androidx.fragment.app.Fragment;
 
 import com.learn.locationmanagement.data.database.LocationDAO;
 import com.learn.locationmanagement.data.database.LocationDatabase;
+import com.learn.locationmanagement.di.app.AppScope;
+import com.learn.locationmanagement.ui.MainActivity;
 import com.learn.locationmanagement.ui.adapter.LocationAdapter;
 
 import java.util.concurrent.Executor;
@@ -24,6 +26,17 @@ public class FragmentModule {
     @Provides
     public LocationDAO locationDAO(LocationDatabase locationDatabase) {
         return locationDatabase.getLocationDAO();
+    }
+
+    @Provides
+    @AppScope
+    public Fragment fragment() {
+        return fragment;
+    }
+
+    @Provides
+    public MainActivity mainActivity() {
+        return (MainActivity) fragment.requireActivity();
     }
 
     @FragmentScope
