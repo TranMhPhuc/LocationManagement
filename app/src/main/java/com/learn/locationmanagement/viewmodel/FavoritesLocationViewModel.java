@@ -24,6 +24,7 @@ public class FavoritesLocationViewModel extends ViewModel {
     private MutableLiveData<List<FavoriteLocation>> favoriteLocations = new MutableLiveData<>();
     private MutableLiveData<Position> navigateToMapScreen = new MutableLiveData<>();
     private MutableLiveData<FavoriteLocation> navigateToDetailScreen = new MutableLiveData<>();
+    private MutableLiveData<Boolean> onRefreshStart = new MutableLiveData<>();
 
     @Inject
     public FavoritesLocationViewModel(LocationRepositoryImpl locationRepository) {
@@ -69,6 +70,16 @@ public class FavoritesLocationViewModel extends ViewModel {
     public void resetFavoriteLocation() {
         navigateToDetailScreen.postValue(null);
     }
+    public void resetOnRefresh() {onRefreshStart.postValue(null);}
+
+    public void onRefresh() {
+        locationRepository.getRefreshFavoriteLocations(callBack);
+        onRefreshStart.postValue(Boolean.TRUE);
+    }
+
+    public LiveData<Boolean> getOnRefreshStartLiveData() {
+        return onRefreshStart;
+    }
 
     private class FavoriteLocationCallBack implements LocationRepository.DataLoadCallBack<List<FavoriteLocation>> {
 
@@ -79,7 +90,7 @@ public class FavoritesLocationViewModel extends ViewModel {
 
         @Override
         public void onDataNotAvailable() {
-
+            throw new UnsupportedOperationException("Not supported on ViewModel");
         }
 
         @Override

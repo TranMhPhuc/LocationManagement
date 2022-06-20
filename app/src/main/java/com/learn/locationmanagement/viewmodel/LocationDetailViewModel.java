@@ -18,6 +18,7 @@ public class LocationDetailViewModel extends ViewModel {
     private final MutableLiveData<LocationDetail> locationDetail = new MutableLiveData<>();
     private MutableLiveData<Boolean> showProgressBar = new MutableLiveData<>();
     private MutableLiveData<Boolean> navigateBackToFavoriteScreen = new MutableLiveData<>();
+    private MutableLiveData<Boolean> onRefreshStart = new MutableLiveData<>();
 
     @Inject
     public LocationDetailViewModel(LocationRepositoryImpl locationRepository) {
@@ -68,7 +69,17 @@ public class LocationDetailViewModel extends ViewModel {
         return navigateBackToFavoriteScreen;
     }
 
+    public void onRefresh(String locationId){
+        locationRepository.getRefreshLocationDetail(locationId, callBack);
+        onRefreshStart.postValue(true);
+    }
+
+    public LiveData<Boolean> getOnRefreshStart() {
+        return onRefreshStart;
+    }
+
     public void onButtonBackClick() {
         navigateBackToFavoriteScreen.postValue(Boolean.TRUE);
     }
+
 }

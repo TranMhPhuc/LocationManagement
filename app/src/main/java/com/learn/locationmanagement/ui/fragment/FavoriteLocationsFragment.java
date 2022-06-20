@@ -7,16 +7,14 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.learn.locationmanagement.databinding.FragmentFavoritesBinding;
-import com.learn.locationmanagement.model.location.common.Position;
 import com.learn.locationmanagement.model.location.favorites.FavoriteLocation;
 import com.learn.locationmanagement.ui.MainActivity;
 import com.learn.locationmanagement.ui.adapter.LocationAdapter;
@@ -78,6 +76,8 @@ public class FavoriteLocationsFragment extends BaseFragment<FragmentFavoritesBin
 
     private void setEvent() {
         LifecycleOwner viewLifecycleOwner = getViewLifecycleOwner();
+        binding.swipeRefresh.setOnRefreshListener(() -> favoritesLocationViewModel.onRefresh());
+
         favoritesLocationViewModel.getShowProgressBarLiveData().observe(viewLifecycleOwner, visible -> {
             if (visible) {
                 mainActivity.showProgressBar();
@@ -93,18 +93,27 @@ public class FavoriteLocationsFragment extends BaseFragment<FragmentFavoritesBin
         favoritesLocationViewModel.getNavigateToMapScreenLiveData().observe(viewLifecycleOwner, position -> {
             // TODO show map
         });
-        favoritesLocationViewModel.getNavigateToDetailScreenLiveData().observe(viewLifecycleOwner, this::onChanged);
+        favoritesLocationViewModel.getNavigateToDetailScreenLiveData().observe(viewLifecycleOwner, this::onNavigateChange);
+        favoritesLocationViewModel.getOnRefreshStartLiveData().observe(viewLifecycleOwner, this::onRefresh);
         favoritesLocationViewModel.getFavoriteLocations();
     }
 
+    private void onRefresh(Boolean isRefresh) {
+        if (isRefresh == null) return;
+        binding.swipeRefresh.setRefreshing(false);
+    }
+
+
     @Override
     public void onDestroyView() {
-        favoritesLocationViewModel.getNavigateToDetailScreenLiveData().removeObserver(this::onChanged);
+        favoritesLocationViewModel.getNavigateToDetailScreenLiveData().removeObserver(this::onNavigateChange);
         favoritesLocationViewModel.resetFavoriteLocation();
+        favoritesLocationViewModel.getOnRefreshStartLiveData().removeObserver(this::onRefresh);
+        favoritesLocationViewModel.resetOnRefresh();
         super.onDestroyView();
     }
 
-    private void onChanged(FavoriteLocation favoriteLocation) {
+    private void onNavigateChange(FavoriteLocation favoriteLocation) {
         if (favoriteLocation == null) return;
         FavoriteLocationsFragmentDirections.ActionFavoritesFragmentToDetailFragment actionFavoritesFragmentToDetailFragment
                 = FavoriteLocationsFragmentDirections.actionFavoritesFragmentToDetailFragment(favoriteLocation);

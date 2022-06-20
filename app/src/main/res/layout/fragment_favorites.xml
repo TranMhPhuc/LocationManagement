@@ -16,20 +16,33 @@
         android:textAppearance="@style/TextAppearance.Material3.ActionBar.Title"
         android:textStyle="bold" />
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/locationSearchView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_8dp"
-        android:background="@drawable/material_full_rounded_corner_4dp"
-        android:elevation="@dimen/elevation_4dp" />
+        android:layout_weight="1"
+        android:layout_height="0dp">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/locationRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/margin_8dp"
-        android:layout_marginTop="@dimen/margin_8dp"
-        android:layout_marginEnd="@dimen/margin_8dp"
-        tools:listitem="@layout/item_location" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/locationSearchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_8dp"
+                android:background="@drawable/material_full_rounded_corner_4dp"
+                android:elevation="@dimen/elevation_4dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/locationRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/margin_8dp"
+                android:layout_marginTop="@dimen/margin_8dp"
+                android:layout_marginEnd="@dimen/margin_8dp"
+                tools:listitem="@layout/item_location" />
+        </LinearLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

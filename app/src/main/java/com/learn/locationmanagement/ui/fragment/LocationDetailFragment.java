@@ -63,6 +63,7 @@ public class LocationDetailFragment extends BaseFragment<FragmentDetailBinding> 
                 binding.tvLocationDescriptionInfo.setText(locationDetail.getDescription());
                 imageLoader.loadImageWithFragment(favoriteLocation.getImage(), R.drawable.place, R.drawable.place, binding.ivLocationDetail);
         });
+
         locationDetailViewModel.getNavigateBackToFavoriteScreenLiveData().observe(viewLifecycleOwner, goBack -> {
                 navController.popBackStack();
         });
@@ -74,8 +75,14 @@ public class LocationDetailFragment extends BaseFragment<FragmentDetailBinding> 
                 }
         });
         locationDetailViewModel.getLocationDetail(favoriteLocation.getId());
+        locationDetailViewModel.getOnRefreshStart().observe(viewLifecycleOwner, onRefreshStart -> {
+            binding.swipeRefresh.setRefreshing(false);
+        });
+
         binding.btnGoBack.setOnClickListener(view -> {
             locationDetailViewModel.onButtonBackClick();
         });
+
+        binding.swipeRefresh.setOnRefreshListener(() -> locationDetailViewModel.onRefresh(favoriteLocation.getId()));
     }
 }

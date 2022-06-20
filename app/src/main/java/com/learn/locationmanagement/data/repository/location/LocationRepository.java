@@ -1,6 +1,5 @@
 package com.learn.locationmanagement.data.repository.location;
 
-import com.learn.locationmanagement.data.domain.Location;
 import com.learn.locationmanagement.model.location.detail.LocationDetail;
 import com.learn.locationmanagement.model.location.favorites.FavoriteLocation;
 
@@ -19,4 +18,7 @@ public interface LocationRepository {
 
     void getLocationDetail(String locationId, DataLoadCallBack<LocationDetail> callBack);
     void saveLocationDetail(String locationId, LocationDetail detail);
+
+    void getRefreshFavoriteLocations(DataLoadCallBack<List<FavoriteLocation>> callBack);
+    void getRefreshLocationDetail(String locationId, DataLoadCallBack<LocationDetail> callBack);
 }

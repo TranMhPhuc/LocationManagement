@@ -81,6 +81,10 @@ public class LocationRepositoryImpl implements LocationRepository {
         });
     }
 
+    public void getRefreshFavoriteLocationsFromRemote(DataLoadCallBack<List<FavoriteLocation>> callBack) {
+
+    }
+
     @Override
     public void saveFavoriteLocations(List<FavoriteLocation> locations) {
         locationLocal.saveFavoriteLocations(locations);
@@ -149,5 +153,15 @@ public class LocationRepositoryImpl implements LocationRepository {
     @Override
     public void saveLocationDetail(String locationId, LocationDetail detail) {
         locationLocal.saveLocationDetail(locationId, detail);
+    }
+
+    @Override
+    public void getRefreshFavoriteLocations(DataLoadCallBack<List<FavoriteLocation>> callBack) {
+        getFavoriteLocationsFromRemoteDataSource(callBack);
+    }
+
+    @Override
+    public void getRefreshLocationDetail(String locationId, DataLoadCallBack<LocationDetail> callBack) {
+        getLocationDetailFromRemoteDataSource(locationId, callBack);
     }
 }

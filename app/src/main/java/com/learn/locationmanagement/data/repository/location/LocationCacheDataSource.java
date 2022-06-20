@@ -30,7 +30,11 @@ public class LocationCacheDataSource implements LocationDataSource.Local{
     public void getLocationDetail(String locationId, LocationRepository.DataLoadCallBack<LocationDetail> callBack) {
         Location location = cachedLocations.get(locationId);
         if (location != null) {
-            callBack.onDataLoaded(LocationMapper.toLocationDetail(location));
+            if (location.getLat() == Location.NO_LOCATION || location.getLng() == Location.NO_LOCATION) {
+                callBack.onDataNotAvailable();
+            } else {
+                callBack.onDataLoaded(LocationMapper.toLocationDetail(location));
+            }
         } else {
             callBack.onDataNotAvailable();
         }
