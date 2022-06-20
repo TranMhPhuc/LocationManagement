@@ -1,5 +1,7 @@
 package com.learn.locationmanagement.di.fragment;
 
+import android.media.Image;
+
 import androidx.fragment.app.Fragment;
 
 import com.learn.locationmanagement.data.database.LocationDAO;
@@ -7,6 +9,7 @@ import com.learn.locationmanagement.data.database.LocationDatabase;
 import com.learn.locationmanagement.di.app.AppScope;
 import com.learn.locationmanagement.ui.MainActivity;
 import com.learn.locationmanagement.ui.adapter.LocationAdapter;
+import com.learn.locationmanagement.ui.common.image.ImageLoader;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -29,9 +32,15 @@ public class FragmentModule {
     }
 
     @Provides
-    @AppScope
+    @FragmentScope
     public Fragment fragment() {
         return fragment;
+    }
+
+    @Provides
+    @FragmentScope
+    public ImageLoader imageLoader() {
+        return new ImageLoader(fragment);
     }
 
     @Provides

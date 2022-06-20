@@ -66,6 +66,10 @@ public class FavoritesLocationViewModel extends ViewModel {
         navigateToMapScreen.postValue(new Position(favoriteLocation, false));
     }
 
+    public void resetFavoriteLocation() {
+        navigateToDetailScreen.postValue(null);
+    }
+
     private class FavoriteLocationCallBack implements LocationRepository.DataLoadCallBack<List<FavoriteLocation>> {
 
         @Override

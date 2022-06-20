@@ -27,12 +27,12 @@ public class LocationDetailFragment extends BaseFragment<FragmentDetailBinding> 
     public ViewModelFactory viewModelFactory;
     @Inject
     public MainActivity mainActivity;
+    @Inject
+    public ImageLoader imageLoader;
     private LocationDetailViewModel locationDetailViewModel;
     private @NonNull
     FavoriteLocation favoriteLocation;
     private NavController navController;
-    @Inject
-    public ImageLoader imageLoader;
 
     @Override
     public FragmentDetailBinding bindView() {
@@ -56,26 +56,26 @@ public class LocationDetailFragment extends BaseFragment<FragmentDetailBinding> 
     private void setEvent() {
         LifecycleOwner viewLifecycleOwner = getViewLifecycleOwner();
         locationDetailViewModel.getLocationDetailLiveData().observe(viewLifecycleOwner, locationDetail -> {
-            if (locationDetail != null) {
                 binding.tvLocationCodeInfo.setText(locationDetail.getCode());
                 binding.tvLocationNameInfo.setText(locationDetail.getName());
                 binding.tvLocationLatInfo.setText(String.valueOf(locationDetail.getLat()));
                 binding.tvLocationLngInfo.setText(String.valueOf(locationDetail.getLng()));
                 binding.tvLocationDescriptionInfo.setText(locationDetail.getDescription());
                 imageLoader.loadImageWithFragment(favoriteLocation.getImage(), R.drawable.place, R.drawable.place, binding.ivLocationDetail);
-            }
         });
         locationDetailViewModel.getNavigateBackToFavoriteScreenLiveData().observe(viewLifecycleOwner, goBack -> {
-            navController.popBackStack();
+                navController.popBackStack();
         });
         locationDetailViewModel.getShowProgressBarLiveData().observe(viewLifecycleOwner, visible -> {
-            if (visible) {
-                mainActivity.showProgressBar();
-            } else {
-                mainActivity.hideProgressBar();
-            }
+                if (visible) {
+                    mainActivity.showProgressBar();
+                } else {
+                    mainActivity.hideProgressBar();
+                }
         });
-        binding.btnGoBack.setOnClickListener(view -> locationDetailViewModel.onButtonBackClick());
         locationDetailViewModel.getLocationDetail(favoriteLocation.getId());
+        binding.btnGoBack.setOnClickListener(view -> {
+            locationDetailViewModel.onButtonBackClick();
+        });
     }
 }

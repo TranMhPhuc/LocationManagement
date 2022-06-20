@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.viewbinding.ViewBinding;
 
 import com.learn.locationmanagement.LocationManagementApp;
@@ -44,6 +46,10 @@ public abstract class BaseFragment<V extends ViewBinding> extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = bindView();
         return binding.getRoot();
+    }
+
+    public boolean isLifeCycleOnResumedState(LifecycleOwner lifecycleOwner) {
+        return lifecycleOwner.getLifecycle().getCurrentState() == Lifecycle.State.RESUMED;
     }
 
     public abstract V bindView();

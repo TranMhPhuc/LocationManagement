@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
+import com.learn.locationmanagement.di.fragment.FragmentScope;
 
 import javax.inject.Inject;
 
@@ -27,7 +28,6 @@ public class ImageLoader {
 
     private Fragment fragment;
 
-    @Inject
     public ImageLoader (Fragment fragment) {
         this.fragment = fragment;
     }
