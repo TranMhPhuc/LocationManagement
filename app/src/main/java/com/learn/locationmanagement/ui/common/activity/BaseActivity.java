@@ -22,7 +22,7 @@ public abstract class BaseActivity<V extends ViewBinding> extends AppCompatActiv
     }
 
     private void setupStatusBar() {
-        this.getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.primaryDarkColor));
+        this.getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.primaryColor));
         this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
 

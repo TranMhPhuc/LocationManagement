@@ -11,7 +11,8 @@
     <string name="label_detail_locationLat">Lat</string>
     <string name="text_detail_locationLong">Long</string>
     <string name="text_detail_locationDescription">Mô tả</string>
-    <string name="label_detail_buttonFind">Tìm đường</string>
     <string name="label_detail_buttonGo">Xuất phát</string>
     <string name="hint_favorite_searchView"><i>Nhập tên hoặc mã địa danh</i></string>
+    <string name="label_map_fab">Mở Map</string>
+    <string name="text_map_code">Mã: %1$s</string>
 </resources>

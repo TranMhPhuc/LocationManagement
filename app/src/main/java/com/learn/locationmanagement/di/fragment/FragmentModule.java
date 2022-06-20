@@ -1,14 +1,16 @@
 package com.learn.locationmanagement.di.fragment;
 
-import android.media.Image;
-
 import androidx.fragment.app.Fragment;
 
 import com.learn.locationmanagement.data.database.LocationDAO;
 import com.learn.locationmanagement.data.database.LocationDatabase;
-import com.learn.locationmanagement.di.app.AppScope;
+import com.learn.locationmanagement.data.repository.location.LocationCacheDataSource;
+import com.learn.locationmanagement.data.repository.location.LocationLocalDataSource;
+import com.learn.locationmanagement.data.repository.location.LocationRemoteDataSource;
+import com.learn.locationmanagement.data.repository.location.LocationRepository;
+import com.learn.locationmanagement.data.repository.location.LocationRepositoryImpl;
 import com.learn.locationmanagement.ui.MainActivity;
-import com.learn.locationmanagement.ui.adapter.LocationAdapter;
+import com.learn.locationmanagement.ui.common.dialog.DialogNavigator;
 import com.learn.locationmanagement.ui.common.image.ImageLoader;
 
 import java.util.concurrent.Executor;
@@ -50,7 +52,19 @@ public class FragmentModule {
 
     @FragmentScope
     @Provides
+    public DialogNavigator dialogNavigator() {
+        return new DialogNavigator(fragment().getContext());
+    }
+
+    @FragmentScope
+    @Provides
     public Executor executor() {
         return Executors.newSingleThreadExecutor();
+    }
+
+    @FragmentScope
+    @Provides
+    public LocationRepository locationRepository(LocationRemoteDataSource locationRemote, LocationLocalDataSource locationLocal, LocationCacheDataSource cachedLocation) {
+        return new LocationRepositoryImpl(locationRemote, locationLocal, cachedLocation);
     }
 }

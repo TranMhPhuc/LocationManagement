@@ -12,8 +12,11 @@ import androidx.navigation.Navigation;
 
 import com.learn.locationmanagement.R;
 import com.learn.locationmanagement.databinding.FragmentDetailBinding;
+import com.learn.locationmanagement.model.location.common.Message;
+import com.learn.locationmanagement.model.location.detail.LocationDetail;
 import com.learn.locationmanagement.model.location.favorites.FavoriteLocation;
 import com.learn.locationmanagement.ui.MainActivity;
+import com.learn.locationmanagement.ui.common.dialog.DialogNavigator;
 import com.learn.locationmanagement.ui.common.fragment.BaseFragment;
 import com.learn.locationmanagement.ui.common.image.ImageLoader;
 import com.learn.locationmanagement.viewmodel.LocationDetailViewModel;
@@ -33,6 +36,8 @@ public class LocationDetailFragment extends BaseFragment<FragmentDetailBinding> 
     private @NonNull
     FavoriteLocation favoriteLocation;
     private NavController navController;
+    @Inject
+    public DialogNavigator dialogNavigator;
 
     @Override
     public FragmentDetailBinding bindView() {
@@ -55,34 +60,36 @@ public class LocationDetailFragment extends BaseFragment<FragmentDetailBinding> 
 
     private void setEvent() {
         LifecycleOwner viewLifecycleOwner = getViewLifecycleOwner();
-        locationDetailViewModel.getLocationDetailLiveData().observe(viewLifecycleOwner, locationDetail -> {
-                binding.tvLocationCodeInfo.setText(locationDetail.getCode());
-                binding.tvLocationNameInfo.setText(locationDetail.getName());
-                binding.tvLocationLatInfo.setText(String.valueOf(locationDetail.getLat()));
-                binding.tvLocationLngInfo.setText(String.valueOf(locationDetail.getLng()));
-                binding.tvLocationDescriptionInfo.setText(locationDetail.getDescription());
-                imageLoader.loadImageWithFragment(favoriteLocation.getImage(), R.drawable.place, R.drawable.place, binding.ivLocationDetail);
-        });
+        locationDetailViewModel.getLocationDetailLiveData().observe(viewLifecycleOwner, this::onLocationDetailLoaded);
+        locationDetailViewModel.getErrorMessageLiveData().observe(viewLifecycleOwner, this::onErrorHappen);
+        locationDetailViewModel.getNavigateBackToFavoriteScreenLiveData().observe(viewLifecycleOwner, goBack -> navController.popBackStack());
+        locationDetailViewModel.getShowProgressBarLiveData().observe(viewLifecycleOwner, this::onShowProgressBarChange);
+        locationDetailViewModel.getLocationDetail(favoriteLocation);
+        locationDetailViewModel.getOnRefreshStart().observe(viewLifecycleOwner, onRefreshStart -> binding.swipeRefresh.setRefreshing(false));
 
-        locationDetailViewModel.getNavigateBackToFavoriteScreenLiveData().observe(viewLifecycleOwner, goBack -> {
-                navController.popBackStack();
-        });
-        locationDetailViewModel.getShowProgressBarLiveData().observe(viewLifecycleOwner, visible -> {
-                if (visible) {
-                    mainActivity.showProgressBar();
-                } else {
-                    mainActivity.hideProgressBar();
-                }
-        });
-        locationDetailViewModel.getLocationDetail(favoriteLocation.getId());
-        locationDetailViewModel.getOnRefreshStart().observe(viewLifecycleOwner, onRefreshStart -> {
-            binding.swipeRefresh.setRefreshing(false);
-        });
-
-        binding.btnGoBack.setOnClickListener(view -> {
-            locationDetailViewModel.onButtonBackClick();
-        });
-
+        binding.btnGoBack.setOnClickListener(view -> {locationDetailViewModel.onButtonBackClick();});
         binding.swipeRefresh.setOnRefreshListener(() -> locationDetailViewModel.onRefresh(favoriteLocation.getId()));
+    }
+
+    private void onErrorHappen(Message message) {
+        if (message == null) return;
+        dialogNavigator.showErrorDialog(message);
+    }
+
+    private void onLocationDetailLoaded(LocationDetail locationDetail) {
+        binding.tvLocationCodeInfo.setText(locationDetail.getCode());
+        binding.tvLocationNameInfo.setText(locationDetail.getName());
+        binding.tvLocationLatInfo.setText(String.valueOf(locationDetail.getLat()));
+        binding.tvLocationLngInfo.setText(String.valueOf(locationDetail.getLng()));
+        binding.tvLocationDescriptionInfo.setText(locationDetail.getDescription());
+        imageLoader.loadImageWithFragment(favoriteLocation.getImage(), R.drawable.place, R.drawable.place, binding.ivLocationDetail);
+    }
+
+    private void onShowProgressBarChange(Boolean visible) {
+        if (visible) {
+            mainActivity.showProgressBar();
+        } else {
+            mainActivity.hideProgressBar();
+        }
     }
 }

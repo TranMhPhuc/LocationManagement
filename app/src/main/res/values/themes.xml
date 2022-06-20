@@ -16,5 +16,6 @@
     <style name="Theme.LocationManagement.NoActionBar" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 </resources>

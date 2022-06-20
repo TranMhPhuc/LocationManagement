@@ -13,7 +13,6 @@ public class LocationRepositoryImpl implements LocationRepository {
     private final LocationDataSource.Local locationLocal;
     private final LocationDataSource.Local cachedLocation;
 
-    @Inject
     public LocationRepositoryImpl(LocationRemoteDataSource locationRemote, LocationLocalDataSource locationLocal, LocationCacheDataSource cachedLocation) {
         this.locationRemote = locationRemote;
         this.locationLocal = locationLocal;

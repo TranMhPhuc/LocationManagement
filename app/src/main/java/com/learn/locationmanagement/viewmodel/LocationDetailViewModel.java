@@ -7,21 +7,24 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.learn.locationmanagement.data.repository.location.LocationRepository;
-import com.learn.locationmanagement.data.repository.location.LocationRepositoryImpl;
+import com.learn.locationmanagement.model.location.common.Message;
 import com.learn.locationmanagement.model.location.detail.LocationDetail;
+import com.learn.locationmanagement.model.location.favorites.FavoriteLocation;
 
 import javax.inject.Inject;
 
 public class LocationDetailViewModel extends ViewModel {
     private final LocationRepository.DataLoadCallBack callBack = new LocationDetailCallBack();
     private final LocationRepository locationRepository;
-    private final MutableLiveData<LocationDetail> locationDetail = new MutableLiveData<>();
+    private final MutableLiveData<LocationDetail> locationDetailLD = new MutableLiveData<>();
+    public LocationDetail locationDetail = null;
     private MutableLiveData<Boolean> showProgressBar = new MutableLiveData<>();
     private MutableLiveData<Boolean> navigateBackToFavoriteScreen = new MutableLiveData<>();
     private MutableLiveData<Boolean> onRefreshStart = new MutableLiveData<>();
 
+    private MutableLiveData<Message> errorMessage = new MutableLiveData<>();
     @Inject
-    public LocationDetailViewModel(LocationRepositoryImpl locationRepository) {
+    public LocationDetailViewModel(LocationRepository locationRepository) {
         this.locationRepository = locationRepository;
     }
 
@@ -38,27 +41,27 @@ public class LocationDetailViewModel extends ViewModel {
 
         @Override
         public void onError() {
-            Log.e("===ERROR===", "onError detail: ");
+            errorMessage.postValue(new Message("Có lỗi xảy ra!", "Có lỗi xảy ra trong quá trình lấy thông tin vị trí. Vui lòng thử lai"));
         }
 
         @Override
         public void onError(int errorCode, String errorMessage) {
-            Log.e("===ERROR===", "onError detail: " + errorMessage);
+            LocationDetailViewModel.this.errorMessage.postValue(new Message("Có lỗi xảy ra!", "Có lỗi xảy ra trong quá trình lấy thông tin vị trí. Vui lòng thử lai"));
         }
     }
 
     private void setLocationDetailData(LocationDetail data) {
         showProgressBar.postValue(false);
-        locationDetail.postValue(data);
+        locationDetailLD.postValue(data);
     }
 
-    public void getLocationDetail(String locationId) {
+    public void getLocationDetail(FavoriteLocation favoriteLocation) {
         showProgressBar.postValue(Boolean.TRUE);
-        locationRepository.getLocationDetail(locationId, callBack);
+        locationRepository.getLocationDetail(favoriteLocation.getId(), callBack);
     }
 
     public LiveData<LocationDetail> getLocationDetailLiveData() {
-        return locationDetail;
+        return locationDetailLD;
     }
 
     public LiveData<Boolean> getShowProgressBarLiveData() {
@@ -81,5 +84,10 @@ public class LocationDetailViewModel extends ViewModel {
     public void onButtonBackClick() {
         navigateBackToFavoriteScreen.postValue(Boolean.TRUE);
     }
-
+    public LiveData<Message> getErrorMessageLiveData() {
+        return errorMessage;
+    }
+    public void resetErrorMessage() {
+        this.errorMessage.postValue(null);
+    }
 }

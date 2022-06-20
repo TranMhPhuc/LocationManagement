@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.learn.locationmanagement.data.repository.location.LocationRepository;
 import com.learn.locationmanagement.data.repository.location.LocationRepositoryImpl;
+import com.learn.locationmanagement.model.location.common.Message;
 import com.learn.locationmanagement.model.location.common.Position;
 import com.learn.locationmanagement.model.location.favorites.FavoriteLocation;
 
@@ -25,9 +26,10 @@ public class FavoritesLocationViewModel extends ViewModel {
     private MutableLiveData<Position> navigateToMapScreen = new MutableLiveData<>();
     private MutableLiveData<FavoriteLocation> navigateToDetailScreen = new MutableLiveData<>();
     private MutableLiveData<Boolean> onRefreshStart = new MutableLiveData<>();
+    private MutableLiveData<Message> errorMessage = new MutableLiveData<>();
 
     @Inject
-    public FavoritesLocationViewModel(LocationRepositoryImpl locationRepository) {
+    public FavoritesLocationViewModel(LocationRepository locationRepository) {
         this.locationRepository = locationRepository;
     }
 
@@ -67,7 +69,7 @@ public class FavoritesLocationViewModel extends ViewModel {
         navigateToMapScreen.postValue(new Position(favoriteLocation, false));
     }
 
-    public void resetFavoriteLocation() {
+    public void resetNavigateToDetailScreen() {
         navigateToDetailScreen.postValue(null);
     }
     public void resetOnRefresh() {onRefreshStart.postValue(null);}
@@ -79,6 +81,10 @@ public class FavoritesLocationViewModel extends ViewModel {
 
     public LiveData<Boolean> getOnRefreshStartLiveData() {
         return onRefreshStart;
+    }
+
+    public void resetNavigateToMapScreen() {
+        navigateToMapScreen.postValue(null);
     }
 
     private class FavoriteLocationCallBack implements LocationRepository.DataLoadCallBack<List<FavoriteLocation>> {
@@ -95,12 +101,20 @@ public class FavoritesLocationViewModel extends ViewModel {
 
         @Override
         public void onError() {
-            Log.e("===ERROR===", "onError: ");
+            errorMessage.postValue(new Message("Có lỗi xảy ra!", "Có lỗi xảy ra trong quá trình lấy thông tin vị trí. Vui lòng thử lai"));
         }
 
         @Override
         public void onError(int errorCode, String errorMessage) {
-            Log.e("===ERROR===", "onError: " + errorCode);
+            FavoritesLocationViewModel.this.errorMessage.postValue(new Message("Có lỗi xảy ra!", "Có lỗi xảy ra trong quá trình lấy thông tin vị trí. Vui lòng thử lai"));
         }
+    }
+
+    public LiveData<Message> getErrorMessageLiveData() {
+        return errorMessage;
+    }
+
+    public void resetErrorMessage() {
+        this.errorMessage.postValue(null);
     }
 }

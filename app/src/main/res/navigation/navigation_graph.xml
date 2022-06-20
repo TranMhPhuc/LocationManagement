@@ -9,28 +9,51 @@
         android:id="@+id/favoritesFragment"
         android:name="com.learn.locationmanagement.ui.fragment.FavoriteLocationsFragment"
         android:label="FragmentFavorites"
-        tools:layout="@layout/fragment_favorites" >
+        tools:layout="@layout/fragment_favorites">
         <action
             android:id="@+id/action_favoritesFragment_to_detailFragment"
             app:destination="@id/detailFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_mapFragment"
+            app:destination="@id/mapFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
+
             />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.learn.locationmanagement.ui.fragment.MapFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map">
+        <argument
+            android:name="favoriteLocation"
+            app:argType="com.learn.locationmanagement.model.location.favorites.FavoriteLocation"
+            app:nullable="true"
+             />
+    </fragment>
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.learn.locationmanagement.ui.fragment.LocationDetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" >
+        tools:layout="@layout/fragment_detail">
         <argument
             android:name="favoriteLocation"
             app:argType="com.learn.locationmanagement.model.location.favorites.FavoriteLocation" />
+        <action
+            android:id="@+id/action_detailFragment_to_mapFragment"
+            app:destination="@id/mapFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+
+            />
     </fragment>
 </navigation>

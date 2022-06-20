@@ -13,12 +13,17 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.learn.locationmanagement.databinding.FragmentFavoritesBinding;
+import com.learn.locationmanagement.model.location.common.Message;
+import com.learn.locationmanagement.model.location.common.Position;
 import com.learn.locationmanagement.model.location.favorites.FavoriteLocation;
 import com.learn.locationmanagement.ui.MainActivity;
 import com.learn.locationmanagement.ui.adapter.LocationAdapter;
+import com.learn.locationmanagement.ui.common.dialog.DialogNavigator;
 import com.learn.locationmanagement.ui.common.fragment.BaseFragment;
 import com.learn.locationmanagement.viewmodel.FavoritesLocationViewModel;
 import com.learn.locationmanagement.viewmodel.ViewModelFactory;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -27,9 +32,10 @@ public class FavoriteLocationsFragment extends BaseFragment<FragmentFavoritesBin
     public ViewModelFactory viewModelFactory;
     @Inject
     public MainActivity mainActivity;
+    @Inject
+    public DialogNavigator dialogNavigator;
     private FavoritesLocationViewModel favoritesLocationViewModel;
     private LocationAdapter locationAdapter;
-
     private NavController navController;
 
     @Override
@@ -63,7 +69,6 @@ public class FavoriteLocationsFragment extends BaseFragment<FragmentFavoritesBin
         binding.locationRecyclerView.setAdapter(locationAdapter);
 
         favoritesLocationViewModel = new ViewModelProvider(this, viewModelFactory).get(FavoritesLocationViewModel.class);
-
     }
 
     private void setEvent() {
@@ -82,24 +87,18 @@ public class FavoriteLocationsFragment extends BaseFragment<FragmentFavoritesBin
         });
 
         LifecycleOwner viewLifecycleOwner = getViewLifecycleOwner();
-        favoritesLocationViewModel.getShowProgressBarLiveData().observe(viewLifecycleOwner, visible -> {
-            if (visible) {
-                mainActivity.showProgressBar();
-            } else {
-                mainActivity.hideProgressBar();
-            }
-        });
-        favoritesLocationViewModel.getFavoriteLocationsLiveData().observe(
-                viewLifecycleOwner, locations -> {
-                    locationAdapter.submitList(locations);
-                }
-        );
-        favoritesLocationViewModel.getNavigateToMapScreenLiveData().observe(viewLifecycleOwner, position -> {
-            // TODO show map
-        });
-        favoritesLocationViewModel.getNavigateToDetailScreenLiveData().observe(viewLifecycleOwner, this::onNavigateChange);
+        favoritesLocationViewModel.getShowProgressBarLiveData().observe(viewLifecycleOwner, this::onShowProgressBarChange);
+        favoritesLocationViewModel.getFavoriteLocationsLiveData().observe(viewLifecycleOwner, this::favoriteLocationsLoaded);
+        favoritesLocationViewModel.getErrorMessageLiveData().observe(viewLifecycleOwner, this::onErrorHappen);
+        favoritesLocationViewModel.getNavigateToMapScreenLiveData().observe(viewLifecycleOwner, this::onNavigateToMapScreen);
+        favoritesLocationViewModel.getNavigateToDetailScreenLiveData().observe(viewLifecycleOwner, this::onNavigateToDetailScreen);
         favoritesLocationViewModel.getOnRefreshStartLiveData().observe(viewLifecycleOwner, this::onRefresh);
         favoritesLocationViewModel.getFavoriteLocations();
+    }
+
+    private void onErrorHappen(Message message) {
+        if (message == null) return;
+        dialogNavigator.showErrorDialog(message);
     }
 
     private void onRefresh(Boolean isRefresh) {
@@ -107,21 +106,42 @@ public class FavoriteLocationsFragment extends BaseFragment<FragmentFavoritesBin
         binding.swipeRefresh.setRefreshing(false);
     }
 
-    private void onNavigateChange(FavoriteLocation favoriteLocation) {
+    private void onNavigateToDetailScreen(FavoriteLocation favoriteLocation) {
         if (favoriteLocation == null) return;
-        FavoriteLocationsFragmentDirections.ActionFavoritesFragmentToDetailFragment actionFavoritesFragmentToDetailFragment
+        FavoriteLocationsFragmentDirections.ActionFavoritesFragmentToDetailFragment action
                 = FavoriteLocationsFragmentDirections.actionFavoritesFragmentToDetailFragment(favoriteLocation);
-        navController.navigate(actionFavoritesFragmentToDetailFragment);
+        navController.navigate(action);
     }
 
+    private void onNavigateToMapScreen(Position position) {
+        if (position == null) return;
+        FavoriteLocationsFragmentDirections.ActionFavoritesFragmentToMapFragment action =
+                FavoriteLocationsFragmentDirections.actionFavoritesFragmentToMapFragment(position.getFavoriteLocation());
+        navController.navigate(action);
+    }
 
     @Override
     public void onDestroyView() {
-        favoritesLocationViewModel.getNavigateToDetailScreenLiveData().removeObserver(this::onNavigateChange);
-        favoritesLocationViewModel.resetFavoriteLocation();
+        favoritesLocationViewModel.getNavigateToDetailScreenLiveData().removeObserver(this::onNavigateToDetailScreen);
+        favoritesLocationViewModel.resetNavigateToDetailScreen();
         favoritesLocationViewModel.getOnRefreshStartLiveData().removeObserver(this::onRefresh);
         favoritesLocationViewModel.resetOnRefresh();
+        favoritesLocationViewModel.getNavigateToMapScreenLiveData().removeObserver(this::onNavigateToMapScreen);
+        favoritesLocationViewModel.resetNavigateToMapScreen();
+        favoritesLocationViewModel.getErrorMessageLiveData().removeObserver(this::onErrorHappen);
+        favoritesLocationViewModel.resetErrorMessage();
         super.onDestroyView();
     }
 
+    private void favoriteLocationsLoaded(List<FavoriteLocation> locations) {
+        locationAdapter.submitList(locations);
+    }
+
+    private void onShowProgressBarChange(Boolean visible) {
+        if (visible) {
+            mainActivity.showProgressBar();
+        } else {
+            mainActivity.hideProgressBar();
+        }
+    }
 }
