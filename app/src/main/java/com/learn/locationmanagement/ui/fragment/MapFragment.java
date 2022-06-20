@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -24,6 +25,7 @@ import com.learn.locationmanagement.model.location.favorites.FavoriteLocation;
 import com.learn.locationmanagement.ui.adapter.LocationDropdownAdapter;
 import com.learn.locationmanagement.ui.common.dialog.DialogNavigator;
 import com.learn.locationmanagement.ui.common.fragment.BaseFragment;
+import com.learn.locationmanagement.ui.common.fragment.GoogleMap;
 import com.learn.locationmanagement.viewmodel.FavoritesLocationViewModel;
 import com.learn.locationmanagement.viewmodel.LocationDetailViewModel;
 import com.learn.locationmanagement.viewmodel.ViewModelFactory;
@@ -37,6 +39,10 @@ public class MapFragment extends BaseFragment<FragmentMapBinding> {
     public ViewModelFactory viewModelFactory;
     @Inject
     public DialogNavigator dialogNavigator;
+
+    @Inject
+    public GoogleMap googleMap;
+
     private FavoriteLocation favoriteLocation;
     private SupportMapFragment supportMapFragment;
     private FavoritesLocationViewModel favoritesLocationViewModel;
@@ -73,16 +79,22 @@ public class MapFragment extends BaseFragment<FragmentMapBinding> {
         favoritesLocationViewModel.getFavoriteLocations();
         favoritesLocationViewModel.getErrorMessageLiveData().observe(viewLifecycleOwner, this::onErrorHappen);
         locationDetailViewModel.getErrorMessageLiveData().observe(viewLifecycleOwner, this::onErrorHappen);
+        favoritesLocationViewModel.getOnRefreshStartLiveData().observe(viewLifecycleOwner, this::onRefreshStart);
         binding.fabOpenGoogleMap.setOnClickListener(this::openGoogleMap);
+        binding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                favoritesLocationViewModel.onRefresh();
+            }
+        });
+    }
+
+    private void onRefreshStart(Boolean aBoolean) {
+        binding.swipeRefresh.setRefreshing(false);
     }
 
     private void openGoogleMap(View view) {
-        LocationDetail detail = locationDetailViewModel.locationDetail;
-        Uri uri = Uri.parse("google.navigation:q=" + detail.getLat() + "," + detail.getLng());
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        intent.setPackage("com.google.android.apps.maps");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        requireActivity().startActivity(intent);
+        googleMap.openGoogleMap(R.id.map, locationDetailViewModel.locationDetail);
     }
 
     private void onErrorHappen(Message message) {
@@ -91,15 +103,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding> {
     }
 
     private void showOnMap(double lat, double lng) {
-        supportMapFragment.getMapAsync(googleMap -> {
-            if (marker != null) {
-                marker.remove();
-            }
-            LatLng latLng = new LatLng(lat, lng);
-            MarkerOptions favorite = new MarkerOptions().position(latLng).title("Favorite");
-            marker = googleMap.addMarker(favorite);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
-        });
+        googleMap.showOnMap(R.id.map, lat, lng);
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.learn.locationmanagement.data.repository.location.LocationRepository;
 import com.learn.locationmanagement.data.repository.location.LocationRepositoryImpl;
 import com.learn.locationmanagement.ui.MainActivity;
 import com.learn.locationmanagement.ui.common.dialog.DialogNavigator;
+import com.learn.locationmanagement.ui.common.fragment.GoogleMap;
 import com.learn.locationmanagement.ui.common.image.ImageLoader;
 
 import java.util.concurrent.Executor;
@@ -31,6 +32,12 @@ public class FragmentModule {
     @Provides
     public LocationDAO locationDAO(LocationDatabase locationDatabase) {
         return locationDatabase.getLocationDAO();
+    }
+
+    @FragmentScope
+    @Provides
+    public GoogleMap googleMap() {
+        return new GoogleMap(fragment);
     }
 
     @Provides

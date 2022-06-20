@@ -20,12 +20,21 @@ public class LocationDetailViewModel extends ViewModel {
     public LocationDetail locationDetail = null;
     private MutableLiveData<Boolean> showProgressBar = new MutableLiveData<>();
     private MutableLiveData<Boolean> navigateBackToFavoriteScreen = new MutableLiveData<>();
+    private MutableLiveData<FavoriteLocation> navigateToMapScreen = new MutableLiveData<>();
     private MutableLiveData<Boolean> onRefreshStart = new MutableLiveData<>();
 
     private MutableLiveData<Message> errorMessage = new MutableLiveData<>();
     @Inject
     public LocationDetailViewModel(LocationRepository locationRepository) {
         this.locationRepository = locationRepository;
+    }
+
+    public void onButtonGoClick(FavoriteLocation favoriteLocation) {
+        navigateToMapScreen.postValue(favoriteLocation);
+    }
+
+    public LiveData<FavoriteLocation> getNavigateToMapScreenLiveData() {
+        return navigateToMapScreen;
     }
 
     private class LocationDetailCallBack implements LocationRepository.DataLoadCallBack<LocationDetail> {
@@ -41,11 +50,13 @@ public class LocationDetailViewModel extends ViewModel {
 
         @Override
         public void onError() {
+            showProgressBar.postValue(false);
             errorMessage.postValue(new Message("Có lỗi xảy ra!", "Có lỗi xảy ra trong quá trình lấy thông tin vị trí. Vui lòng thử lai"));
         }
 
         @Override
         public void onError(int errorCode, String errorMessage) {
+            showProgressBar.postValue(false);
             LocationDetailViewModel.this.errorMessage.postValue(new Message("Có lỗi xảy ra!", "Có lỗi xảy ra trong quá trình lấy thông tin vị trí. Vui lòng thử lai"));
         }
     }
@@ -89,5 +100,11 @@ public class LocationDetailViewModel extends ViewModel {
     }
     public void resetErrorMessage() {
         this.errorMessage.postValue(null);
+    }
+    public void resetNavigateToMapScreen() {
+        this.navigateToMapScreen.postValue(null);
+    }
+    public void resetNavigateBack(){
+        this.navigateBackToFavoriteScreen.postValue(null);
     }
 }

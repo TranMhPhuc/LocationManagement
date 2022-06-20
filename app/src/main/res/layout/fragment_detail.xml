@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button"
+                    android:id="@+id/btnGo"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/label_detail_buttonGo"

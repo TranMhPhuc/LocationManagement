@@ -53,6 +53,7 @@ public class LocationDetailFragment extends BaseFragment<FragmentDetailBinding> 
     }
 
     private void setControl() {
+        binding.btnGo.setEnabled(false);
         favoriteLocation = LocationDetailFragmentArgs.fromBundle(getArguments()).getFavoriteLocation();
         navController = Navigation.findNavController(binding.getRoot());
         locationDetailViewModel = new ViewModelProvider(this, viewModelFactory).get(LocationDetailViewModel.class);
@@ -62,13 +63,21 @@ public class LocationDetailFragment extends BaseFragment<FragmentDetailBinding> 
         LifecycleOwner viewLifecycleOwner = getViewLifecycleOwner();
         locationDetailViewModel.getLocationDetailLiveData().observe(viewLifecycleOwner, this::onLocationDetailLoaded);
         locationDetailViewModel.getErrorMessageLiveData().observe(viewLifecycleOwner, this::onErrorHappen);
-        locationDetailViewModel.getNavigateBackToFavoriteScreenLiveData().observe(viewLifecycleOwner, goBack -> navController.popBackStack());
+        locationDetailViewModel.getNavigateBackToFavoriteScreenLiveData().observe(viewLifecycleOwner, this::navigateBack);
         locationDetailViewModel.getShowProgressBarLiveData().observe(viewLifecycleOwner, this::onShowProgressBarChange);
+        locationDetailViewModel.getNavigateToMapScreenLiveData().observe(viewLifecycleOwner, this::navigateToMapScreen);
         locationDetailViewModel.getLocationDetail(favoriteLocation);
         locationDetailViewModel.getOnRefreshStart().observe(viewLifecycleOwner, onRefreshStart -> binding.swipeRefresh.setRefreshing(false));
-
         binding.btnGoBack.setOnClickListener(view -> {locationDetailViewModel.onButtonBackClick();});
         binding.swipeRefresh.setOnRefreshListener(() -> locationDetailViewModel.onRefresh(favoriteLocation.getId()));
+        binding.btnGo.setOnClickListener(view -> locationDetailViewModel.onButtonGoClick(favoriteLocation));
+    }
+
+    private void navigateToMapScreen(FavoriteLocation favoriteLocation) {
+        if (favoriteLocation == null) return;
+        LocationDetailFragmentDirections.ActionDetailFragmentToMapFragment action =
+                LocationDetailFragmentDirections.actionDetailFragmentToMapFragment(favoriteLocation);
+        navController.navigate(action);
     }
 
     private void onErrorHappen(Message message) {
@@ -77,6 +86,7 @@ public class LocationDetailFragment extends BaseFragment<FragmentDetailBinding> 
     }
 
     private void onLocationDetailLoaded(LocationDetail locationDetail) {
+        binding.btnGo.setEnabled(true);
         binding.tvLocationCodeInfo.setText(locationDetail.getCode());
         binding.tvLocationNameInfo.setText(locationDetail.getName());
         binding.tvLocationLatInfo.setText(String.valueOf(locationDetail.getLat()));
@@ -91,5 +101,18 @@ public class LocationDetailFragment extends BaseFragment<FragmentDetailBinding> 
         } else {
             mainActivity.hideProgressBar();
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        locationDetailViewModel.getNavigateToMapScreenLiveData().removeObserver(this::navigateToMapScreen);
+        locationDetailViewModel.resetNavigateToMapScreen();
+        locationDetailViewModel.getNavigateBackToFavoriteScreenLiveData().removeObserver(this::navigateBack);
+        super.onDestroyView();
+    }
+
+    private void navigateBack(Boolean goBack) {
+        if (goBack == null) return;
+        navController.popBackStack();
     }
 }
