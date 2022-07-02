@@ -25,7 +25,11 @@ public abstract class BaseFragment<V extends ViewBinding> extends Fragment {
     private FragmentComponent getFragmentComponent() {
         LocationManagementApp application = (LocationManagementApp) requireActivity().getApplication();
         if (application != null) {
-            fragmentComponent = application.getAppComponent().newFragmentComponent(new FragmentModule(this));
+            fragmentComponent = application
+                    .getAppComponent()
+                    .newFragmentComponentBuilder()
+                    .fragment(this)
+                    .build();
         }
         return fragmentComponent;
     }

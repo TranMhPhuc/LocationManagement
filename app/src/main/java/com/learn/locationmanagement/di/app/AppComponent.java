@@ -8,5 +8,5 @@ import dagger.Component;
 @AppScope
 @Component(modules = {AppModule.class})
 public interface AppComponent {
-    FragmentComponent newFragmentComponent(FragmentModule module);
+    FragmentComponent.Builder newFragmentComponentBuilder();
 }
